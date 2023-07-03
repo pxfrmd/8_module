@@ -49,8 +49,9 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try (Statement statement = conn.createStatement()) {
-            statement.executeUpdate("DELETE FROM mysql.users where id");
+        try (PreparedStatement statement = conn.prepareStatement("DELETE FROM mysql.users WHERE id = ?")) {
+            statement.setLong(1,id);
+            statement.executeUpdate();
             System.out.println("User удален");
         } catch (SQLException e) {
             e.printStackTrace();
