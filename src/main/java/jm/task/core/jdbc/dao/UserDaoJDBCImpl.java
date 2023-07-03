@@ -37,8 +37,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String sql = "INSERT INTO mysql.users(name, lastname, age) VALUES(?,?,?)";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO mysql.users(name, lastname, age) VALUES(?,?,?)")) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -51,8 +50,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         try (Statement statement = conn.createStatement()) {
-            String sql = "DELETE FROM mysql.users where id";
-            statement.executeUpdate(sql);
+            statement.executeUpdate("DELETE FROM mysql.users where id");
             System.out.println("User удален");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,10 +58,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
-        String sql = "SELECT id, name, lastName, age from mysql.users";
-
         try (Statement statement = conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery("SELECT id, name, lastName, age from mysql.users");
 
             while (resultSet.next()) {
                 User user = new User();
@@ -80,9 +76,8 @@ public class UserDaoJDBCImpl implements UserDao {
         return allUsers;
     }
     public void cleanUsersTable() {
-        String sql = "DELETE FROM mysql.users";
         try (Statement statement = conn.createStatement()) {
-            statement.executeUpdate(sql);
+            statement.executeUpdate("DELETE FROM mysql.users");
             System.out.println("ДАННЫЕ УДАЛЕНЫ");
         } catch (SQLException e) {
             e.printStackTrace();
